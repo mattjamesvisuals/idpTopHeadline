@@ -1,13 +1,22 @@
-body {
-    background-color: Gray;
 
-}
+
 .jumbotron {
-  color: #FFF;
+  color: #000000;
 }
+
 .dpth {
   text-align:center;
   font-family: 'Old Standard TT', serif;
   color: red;
 
+}
+
+#dateDiv {
+  text-align: center;
+  font-family: 'Old Standard TT', serif;
+  font-size: 25px;
+}
+.row {
+    margin-right: -15px;
+    margin-left: 15%;
 }
