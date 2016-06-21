@@ -2,7 +2,12 @@ body {
     background-color: Gray;
 
 }
+.jumbotron {
+  color: #FFF;
+}
 .dpth {
   text-align:center;
   font-family: 'Old Standard TT', serif;
+  color: red;
+
 }
