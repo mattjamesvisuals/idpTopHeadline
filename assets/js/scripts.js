@@ -34,83 +34,46 @@ setInterval("showDate()", 1000);
 //Grab dp feed and assign to variable
 
 $(document).ready(function() {
-            $.get("https://www.denverpost.com/feed/", function(data, status) {
+    $.get("https://www.denverpost.com/feed/", function(data, status) {
 
-                        var xmlDoc = $.parseXML(data);
-                        var xml = $(xmlDoc);
-                        var items = xml.find('item');
-                        //console.log(xmlDoc);
-                        //console.log(xml);
-                        // console.log('items', items);
+        var xmlDoc = $.parseXML(data);
+        var xml = $(xmlDoc);
+        var items = xml.find('item');
+        var articles = {};
+        console.log(xmlDoc);
+        //console.log(xml);
+        // console.log('items', items);
 
-                        items.each(function() {
-                                var item = $(this);
-                                var categories = item.find('category');
-                                // write out the title and description
+        items.each(function() {
+            var item = $(this);
+            console.log(item);
+            var categories = item.find('category');
 
-                                categories.each(function() {
-                                        if ($(this).text() == 'News') {
-                                            $('.newsheadline').html(item.children('title').text());
-                                            $('.newsfeed').html(item.children('description').text());
-                                            console.log($(this).text())
-                                                }
-																				if ($(this).text() == 'Sports') {
-																						$('.sportsheadline').html(item.children('title').text());
-																						$('.sportsfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																								}
+            // write out the title and description
 
-																				if ($(this).text() == 'Business') {
-																						$('.businessheadline').html(item.children('title').text());
-																						$('.businessfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
+            categories.each(function() {
+                var category = $(this).text();
+                articles[category] = {
+                  "title": item.children('title').text(),
+                  "blurb": item.children('description').text()
+                };
+            });
+        });
+        // get the first item
 
-																				if ($(this).text() == 'Entertainment') {
-																						$('.entertainmentheadline').html(item.children('title').text());
-																						$('.entertainmentfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																						}
+        console.log(articles);
 
-																				if ($(this).text() == 'Lifestyle') {
-																						$('.lifestyleheadline').html(item.children('title').text());
-																						$('.lifestylefeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
+        // for (var category in articles) {
+        //   console.log(category.toLowerCase());
+        //   if ($('.' + category.toLowerCase() + 'headline')) {
+        //     var titleTag = $('.' + category.toLowerCase() + 'headline');
+        //     var descTag = $('.' + category.toLowerCase() + 'desc');
+        //     titleTag.html(category.title);
+        //     descTag.html(category.blurb);
+        //   }
+        // }
 
-																				if ($(this).text() == 'Opinion') {
-																						$('.opinionheadline').html(item.children('title').text());
-																						$('.opinionfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
-
-																				if ($(this).text() == 'Politics') {
-																						$('.politicsheadline').html(item.children('title').text());
-																						$('.politicsfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
-
-																				if ($(this).text() == 'Cannabist') {
-																						$('.cannabistheadline').html(item.children('title').text());
-																						$('.cannabistfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
-
-																				if ($(this).text() == 'Weather') {
-																						$('.weatherheadline').html(item.children('title').text());
-																						$('.weatherfeed').html(item.children('description').text());
-																							console.log($(this).text())
-																									}
+        });
 
 
-
-                                            });
-                                        });
-                                    // get the first item
-
-
-
-
-                                }, 'text');
-
-                        });
+    }, 'text');
