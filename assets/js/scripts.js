@@ -34,46 +34,51 @@ setInterval("showDate()", 1000);
 //Grab dp feed and assign to variable
 
 $(document).ready(function() {
+
     $.get("https://www.denverpost.com/feed/", function(data, status) {
 
         var xmlDoc = $.parseXML(data);
         var xml = $(xmlDoc);
         var items = xml.find('item');
         var articles = {};
-        console.log(xmlDoc);
-        //console.log(xml);
+        var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'cannabist', 'weather'];
+        // console.log(xmlDoc);
+        // console.log(xml);
         // console.log('items', items);
 
+        // loop through each item / article
         items.each(function() {
             var item = $(this);
-            console.log(item);
             var categories = item.find('category');
 
-            // write out the title and description
-
+            // loop through each category in an article
             categories.each(function() {
+                // get the category name
                 var category = $(this).text();
+
+                // create a json object for each category
                 articles[category] = {
-                  "title": item.children('title').text(),
-                  "blurb": item.children('description').text()
+                    "title": item.children('title').text(),
+                    "blurb": item.children('description').text()
                 };
             });
         });
-        // get the first item
 
-        console.log(articles);
+        // after we have sorted out all of articles and have one per category,
+        // loop through each category and try to write articles to divs
+        for (var category in articles) {
+            if (newsCategories.includes(category.toLowerCase())) {
+                // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
+                var headlineDiv = '.' + category.toLowerCase() + 'headline';
+                var blurbDiv = '.' + category.toLowerCase() + 'feed';
 
-        // for (var category in articles) {
-        //   console.log(category.toLowerCase());
-        //   if ($('.' + category.toLowerCase() + 'headline')) {
-        //     var titleTag = $('.' + category.toLowerCase() + 'headline');
-        //     var descTag = $('.' + category.toLowerCase() + 'desc');
-        //     titleTag.html(category.title);
-        //     descTag.html(category.blurb);
-        //   }
-        // }
-
-        });
-
-
+                if ($(headlineDiv)) {
+                    var titleTag = $(headlineDiv);
+                    var descTag = $(blurbDiv);
+                    titleTag.html(articles[category].title);
+                    descTag.html(articles[category].blurb);
+                }
+            }
+        }
     }, 'text');
+});
