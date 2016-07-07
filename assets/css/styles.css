@@ -19,15 +19,23 @@
 .row {
     margin-right: -15px;
     margin-left: 15%;
+
 }
 
 .headline {
-  width: 33%;
-  color: red;
+  width: 100%;
+  color: black;
+  font-weight: bold;
 
 }
 
-.newsheadline {
-  width: 25%;
-
+.col-md-4 {
+    width: 33.33333333%;
+    height: 200px;
+    margin-bottom: 10%;
 }
+
+/*.blurb {
+  height: 75px;
+  display:flex;
+}*/
