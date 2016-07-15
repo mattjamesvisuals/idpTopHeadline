@@ -42,7 +42,7 @@ $(document).ready(function() {
         var items = xml.find('item');
         var articles = {};
         var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'cannabist', 'weather'];
-        // console.log(xmlDoc);
+        //console.log(xmlDoc);
         // console.log(xml);
         // console.log('items', items);
 
@@ -55,12 +55,17 @@ $(document).ready(function() {
             categories.each(function() {
                 // get the category name
                 var category = $(this).text();
+                if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
-                // create a json object for each category
-                articles[category] = {
-                    "title": item.children('title').text(),
-                    "blurb": item.children('description').text()
-                };
+
+                    // create a json object for each category
+                    articles[category] = {
+                        "title": item.children('title').text(),
+                        "blurb": item.children('description').text()
+                    };
+                    //exiting the catagories loop
+                    return;
+                }
             });
         });
 
