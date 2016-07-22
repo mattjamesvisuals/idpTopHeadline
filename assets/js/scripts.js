@@ -29,61 +29,88 @@ function showDate() {
     document.getElementById("dateDiv").innerHTML = today;
 }
 setInterval("showDate()", 1000);
+//Feeds
+
+var feeds = {
+  "news": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/208801.xml",
+  "sports": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/200303.xml",
+  "business": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/200302.xml",
+  "entertainment": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/200302.xml",
+  "lifestyle": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/273504.xml",
+  "opinion": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/207703.xml",
+  "politics": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/273502.xml",
+  "cannabist": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/282004.xml",
+  "weather": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/213601.xml",
+};
 
 
-//Grab dp feed and assign to variable
 
 $(document).ready(function() {
 
-    $.get("https://www.denverpost.com/feed/", function(data, status) {
+  for (var category in feeds){
+    //console.log (feeds[category]);
+    $.get(feeds[category], function(data, status) {
 
-        var xmlDoc = $.parseXML(data);
-        var xml = $(xmlDoc);
-        var items = xml.find('item');
-        var articles = {};
-        var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'cannabist', 'weather'];
-        //console.log(xmlDoc);
-        // console.log(xml);
-        // console.log('items', items);
+            var xmlDoc = $.parseXML(data);
+            var xml = $(xmlDoc);
+            var article = xml.find('article');
+            var abstract = xml.find('abstract');
 
-        // loop through each item / article
-        items.each(function() {
-            var item = $(this);
-            var categories = item.find('category');
+            console.log (abstract);
+          },
+          'text');
+  }
 
-            // loop through each category in an article
-            categories.each(function() {
-                // get the category name
-                var category = $(this).text();
-                if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
+    /*$.get("", function(data, status) {
+
+            var xmlDoc = $.parseXML(data);
+            var xml = $(xmlDoc);
+            var items = xml.find('item');
+            var articles = {}
+            //console.log(xmlDoc);
+            // console.log(xml);
+            // console.log('items', items);
+
+            // loop through each item / article
+            items.each(function() {
+                var item = $(this);
+                var categories = item.find('category');
+
+                // loop through each category in an article
+                categories.each(function() {
+                    // get the category name
+                    var category = $(this).text();
+                    if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
 
-                    // create a json object for each category
-                    articles[category] = {
-                        "title": item.children('title').text(),
-                        "blurb": item.children('description').text()
-                    };
-                    //exiting the catagories loop
-                    return;
-                }
+                        // create a json object for each category
+                        articles[category] = {
+                            "title": item.children('title').text(),
+                            "blurb": item.children('description').text()
+                        };
+
+
+                    }
+                });
             });
-        });
 
-        // after we have sorted out all of articles and have one per category,
-        // loop through each category and try to write articles to divs
-        for (var category in articles) {
-            if (newsCategories.includes(category.toLowerCase())) {
-                // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
-                var headlineDiv = '.' + category.toLowerCase() + 'headline';
-                var blurbDiv = '.' + category.toLowerCase() + 'feed';
 
-                if ($(headlineDiv)) {
-                    var titleTag = $(headlineDiv);
-                    var descTag = $(blurbDiv);
-                    titleTag.html(articles[category].title);
-                    descTag.html(articles[category].blurb);
+            // after we have sorted out all of articles and have one per category,
+            // loop through each category and try to write articles to divs
+            for (var category in articles) {
+                if (newsCategories.includes(category.toLowerCase())) {
+                    // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
+                    var headlineDiv = '.' + category.toLowerCase() + 'headline';
+                    var blurbDiv = '.' + category.toLowerCase() + 'feed';
+
+                    if ($(headlineDiv)) {
+                        var titleTag = $(headlineDiv);
+                        var descTag = $(blurbDiv);
+                        titleTag.html(articles[category].title);
+                        descTag.html(articles[category].blurb);
+                    }
                 }
             }
-        }
-    }, 'text');
+        },
+        'text');*/
 });
