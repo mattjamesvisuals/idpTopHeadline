@@ -43,20 +43,29 @@ var feeds = {
   "weather": "http://rss.denverpost.com/mngi/rss/CustomRssServlet/36/213601.xml",
 };
 
+feeds["news"];
+
 
 
 $(document).ready(function() {
 
   for (var category in feeds){
-    //console.log (feeds[category]);
+    console.log (feeds[category]);
     $.get(feeds[category], function(data, status) {
 
             var xmlDoc = $.parseXML(data);
             var xml = $(xmlDoc);
-            var article = xml.find('article');
-            var abstract = xml.find('abstract');
+            var articles = xml.find('item');
+            articles.each(function() {
+                var item = $(this);
+                var title = item.find('title').text();
+                var link = item.find('link').text();
+                var description = item.find('description').text();
+                console.log (category, title);
+                 return false;
+              });
 
-            console.log (abstract);
+            //console.log (xml);
           },
           'text');
   }
