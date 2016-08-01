@@ -34,8 +34,8 @@ setInterval("showDate()", 1000);
 //Grab dp feed and assign to variable
 
 $(document).ready(function() {
-
-    $.get("https://www.denverpost.com/feed/", function(data, status) {
+   $('#myModal').modal('show');
+    $.get("http://www.denverpost.com/feed/", function(data, status) {
 
         var xmlDoc = $.parseXML(data);
         var xml = $(xmlDoc);
@@ -44,7 +44,7 @@ $(document).ready(function() {
         var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'cannabist', 'weather'];
         //console.log(xmlDoc);
         // console.log(xml);
-        // console.log('items', items);
+         console.log('items', items);
 
         // loop through each item / article
         items.each(function() {
@@ -68,7 +68,13 @@ $(document).ready(function() {
                 }
             });
         });
+          for (var i=0; i < newsCategories.length; i++) {
+            var category = newsCategories[i];
+            if (!articles[category]){
+                console.log(newsCategories[i]);
+            }
 
+          }
         // after we have sorted out all of articles and have one per category,
         // loop through each category and try to write articles to divs
         for (var category in articles) {

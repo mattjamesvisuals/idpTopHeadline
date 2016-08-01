@@ -1,41 +1,33 @@
-
-
 /*.jumbotron {
   color: #000000;
 }*/
-
-.dpth {
-  text-align:center;
-  font-family: 'Old Standard TT', serif;
-  color: red;
-
+#myModal {
+  
 }
 
+.dpth {
+    text-align: center;
+    font-family: 'Old Standard TT', serif;
+    color: red;
+}
 #dateDiv {
-  text-align: center;
-  font-family: 'Old Standard TT', serif;
-  font-size: 25px;
+    text-align: center;
+    font-family: 'Old Standard TT', serif;
+    font-size: 25px;
 }
 .row {
     margin-right: -15px;
     margin-left: 15%;
-
 }
-
 .headline {
-  width: 100%;
-  color: black;
-  font-weight: bold;
-
+    width: 100%;
+    color: black;
+    font-weight: bold;
 }
-
-.col-md-4 {
-    width: 33.33333333%;
-    height: 200px;
-    margin-bottom: 10%;
-}
-
 .blurb {
-  height: 75px;
-  display:flex;
+  min-height: 75px;
+    display: flex;
+}
+.container {
+  margin-left: auto;
 }
