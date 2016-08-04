@@ -1,3 +1,17 @@
+$body = $("body");
+
+$(document).on({
+    ajaxStart: function() {
+        $body.addClass("loading");
+    },
+    ajaxStop: function() {
+        $body.removeClass("loading");
+    }
+});
+
+
+
+
 $('h2').css('color', '#8B0000', 'align', 'center');
 
 function showDate() {
@@ -31,20 +45,34 @@ function showDate() {
 setInterval("showDate()", 1000);
 
 
+
 //Grab dp feed and assign to variable
 
 $(document).ready(function() {
-   $('#myModal').modal('show');
+    $('#myModal').modal('show');
     $.get("http://www.denverpost.com/feed/", function(data, status) {
+
+        // secondary feeds in case primary feed article is empty
+        var feeds = {
+            "news": "http://denverpost.com/feature/app-news/feed/",
+            "sports": "http://www.denverpost.com/feature/app-sports/feed/",
+            "business": "http://denverpost.com/business/feed/",
+            "entertainment": "http://www.denverpost.com/entertainment/feed/",
+            "lifestyle": "http://denverpost.com/lifestyle/feed/",
+            "opinion": "http://denverpost.com/opinion/feed/",
+            "politics": "http://denverpost.com/politics/feed/",
+            "cannabist": "http://www.thecannabist.co/feed/",
+            "weather": "http://m.accuweather.com/en/us/denver-co/80203/weather-forecast/347810",
+        };
 
         var xmlDoc = $.parseXML(data);
         var xml = $(xmlDoc);
         var items = xml.find('item');
         var articles = {};
-        var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'cannabist', 'weather'];
+        var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
         //console.log(xmlDoc);
         // console.log(xml);
-         console.log('items', items);
+        console.log('items', items);
 
         // loop through each item / article
         items.each(function() {
@@ -59,7 +87,7 @@ $(document).ready(function() {
 
 
                     // create a json object for each category
-                    articles[category] = {
+                    articles[category.toLowerCase()] = {
                         "title": item.children('title').text(),
                         "blurb": item.children('description').text()
                     };
@@ -68,13 +96,29 @@ $(document).ready(function() {
                 }
             });
         });
-          for (var i=0; i < newsCategories.length; i++) {
+        for (var i = 0; i < newsCategories.length; i++) {
             var category = newsCategories[i];
-            if (!articles[category]){
-                console.log(newsCategories[i]);
+            if (!articles.hasOwnProperty(category)) {
+
+                //calling feed and parsing
+                $.get(feeds[category], function(data, status) {
+                  console.log(newsCategories[i]);
+                  console.log(feeds[category]);
+
+                    var xmlDocCategory = $.parseXML(data);
+                    var xmlCategory = $(xmlDoc);
+                    var itemsCategory = xml.find('item');
+                    var articlesCategory = {};
+                    //console.log(xmlDoc);
+                    // console.log(xml);
+                    console.log('items', itemsCategory);
+                }, 'text');
             }
 
-          }
+        }
+
+
+
         // after we have sorted out all of articles and have one per category,
         // loop through each category and try to write articles to divs
         for (var category in articles) {
