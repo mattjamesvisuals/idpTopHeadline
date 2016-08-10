@@ -50,6 +50,9 @@ setInterval("showDate()", 1000);
 
 $(document).ready(function() {
     $('#myModal').modal('show');
+    var articles = {};
+    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
+
     $.get("http://www.denverpost.com/feed/", function(data, status) {
 
         // secondary feeds in case primary feed article is empty
@@ -68,8 +71,7 @@ $(document).ready(function() {
         var xmlDoc = $.parseXML(data);
         var xml = $(xmlDoc);
         var items = xml.find('item');
-        var articles = {};
-        var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
+
         //console.log(xmlDoc);
         // console.log(xml);
         console.log('items', items);
@@ -79,11 +81,11 @@ $(document).ready(function() {
             var item = $(this);
             var categories = item.find('category');
 
-        // loop through each category in an article
-        categories.each(function() {
-        // get the category name
-            var category = $(this).text();
-                if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
+            // loop through each category in an article
+            categories.each(function() {
+                // get the category name
+                var category = $(this).text();
+                  if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
                     // create a json object for each category
                     articles[category.toLowerCase()] = {
@@ -92,47 +94,52 @@ $(document).ready(function() {
                     };
 
                     //exiting the catagories loop
-                return;
+                    return;
                 }
             });
         });
 
         for (var i = 0; i < newsCategories.length; i++) {
             var category = newsCategories[i];
-            if (!articles.hasOwnProperty(category)) {
+              if (!articles.hasOwnProperty(category)) {
+
+                console.log(newsCategories[i]);
+                console.log(feeds[category]);
 
                 //calling feed and parsing
                 $.get(feeds[category], function(data, status) {
-                  console.log(newsCategories[i]);
-                  console.log(feeds[category]);
 
-                    var xmlDocCategory = $.parseXML(data);
-                    var xmlCategory = $(xmlDoc);
-                    var itemsCategory = xml.find('item');
-                    var articlesCategory = {};
-                    //console.log(xmlDoc);
-                    // console.log(xml);
-                    console.log('items', itemsCategory);
-                }, 'text');
+                     var xmlDocCategory = $.parseXML(data);
+                     var xmlCategory = $(xmlDocCategory);
+                     var itemsCategory = xmlCategory.find('item');
+                //     var articlesCategory = {};
+                     console.log(itemsCategory);
+                //     // console.log(xml);
+                //     console.log('items', itemsCategory);
+                 }, 'text');
             }
-          }
+        }
 
         // after we have sorted out all of articles and have one per category,
         // loop through each category and try to write articles to divs
 
-        for (var category in articles) {
-            if (newsCategories.includes(category.toLowerCase())) {
-                // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
-                var headlineDiv = '.' + category.toLowerCase() + 'headline';
-                var blurbDiv = '.' + category.toLowerCase() + 'feed';
 
-            if ($(headlineDiv)) {
-                var titleTag = $(headlineDiv);
-                var descTag = $(blurbDiv);
-                    titleTag.html(articles[category].title);
-                    descTag.html(articles[category].blurb);
-                }
-            }
-        }
-    }, 'text');
+    }, 'text')
+    .done(function(){
+      for (var category in articles) {
+          if (newsCategories.includes(category.toLowerCase())) {
+              // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
+              var headlineDiv = '.' + category.toLowerCase() + 'headline';
+              var blurbDiv = '.' + category.toLowerCase() + 'feed';
+
+              if ($(headlineDiv)) {
+                console.log("writing content for category: ", category);
+                  var titleTag = $(headlineDiv);
+                  var descTag = $(blurbDiv);
+                  titleTag.html(articles[category].title);
+                  descTag.html(articles[category].blurb);
+              }
+          }
+      }
+    });
 });
