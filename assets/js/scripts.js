@@ -11,7 +11,7 @@ $(document).on({
 
 
 
-
+//Date and Time Code
 $('h2').css('color', '#8B0000', 'align', 'center');
 
 function showDate() {
@@ -79,23 +79,24 @@ $(document).ready(function() {
             var item = $(this);
             var categories = item.find('category');
 
-            // loop through each category in an article
-            categories.each(function() {
-                // get the category name
-                var category = $(this).text();
+        // loop through each category in an article
+        categories.each(function() {
+        // get the category name
+            var category = $(this).text();
                 if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
-
 
                     // create a json object for each category
                     articles[category.toLowerCase()] = {
                         "title": item.children('title').text(),
                         "blurb": item.children('description').text()
                     };
+
                     //exiting the catagories loop
-                    return;
+                return;
                 }
             });
         });
+
         for (var i = 0; i < newsCategories.length; i++) {
             var category = newsCategories[i];
             if (!articles.hasOwnProperty(category)) {
@@ -114,22 +115,20 @@ $(document).ready(function() {
                     console.log('items', itemsCategory);
                 }, 'text');
             }
-
-        }
-
-
+          }
 
         // after we have sorted out all of articles and have one per category,
         // loop through each category and try to write articles to divs
+
         for (var category in articles) {
             if (newsCategories.includes(category.toLowerCase())) {
                 // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
                 var headlineDiv = '.' + category.toLowerCase() + 'headline';
                 var blurbDiv = '.' + category.toLowerCase() + 'feed';
 
-                if ($(headlineDiv)) {
-                    var titleTag = $(headlineDiv);
-                    var descTag = $(blurbDiv);
+            if ($(headlineDiv)) {
+                var titleTag = $(headlineDiv);
+                var descTag = $(blurbDiv);
                     titleTag.html(articles[category].title);
                     descTag.html(articles[category].blurb);
                 }
