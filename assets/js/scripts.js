@@ -90,7 +90,8 @@ $(document).ready(function() {
                     // create a json object for each category
                     articles[category.toLowerCase()] = {
                         "title": item.children('title').text(),
-                        "blurb": item.children('description').text()
+                        "blurb": item.children('description').text(),
+                        "link": item.children('link').text()
                     };
 
                     //exiting the catagories loop
@@ -128,15 +129,28 @@ $(document).ready(function() {
     .done(function(){
       for (var category in articles) {
           if (newsCategories.includes(category.toLowerCase())) {
-              // Get the class name of the div based on the category name (.newsheadline, .newsdesc)
+              // Get the class name of the div based on the category name (.newsheadline, .newsfeed)
               var headlineDiv = '.' + category.toLowerCase() + 'headline';
               var blurbDiv = '.' + category.toLowerCase() + 'feed';
+
+            /*  var articles = {
+                'sports': {
+                  'title': 'go fuck yo self',
+                  'blurb': 'something long',
+                  'link': 'http://fuckit'
+                },
+                'news': {
+                  'title': 'go fuck yo self',
+                  'blurb': 'something long'
+                }
+              }; */
 
               if ($(headlineDiv)) {
                 console.log("writing content for category: ", category);
                   var titleTag = $(headlineDiv);
                   var descTag = $(blurbDiv);
-                  titleTag.html(articles[category].title);
+                  var myhref  = articles[category].link;
+                  titleTag.html('<a target="_blank" href="' + myhref + '">' + articles[category].title + '</a>');
                   descTag.html(articles[category].blurb);
               }
           }
