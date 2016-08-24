@@ -55,105 +55,107 @@ $(document).ready(function() {
 
     $.get("http://www.denverpost.com/feed/", function(data, status) {
 
-        // secondary feeds in case primary feed article is empty
-        var feeds = {
-            "news": "http://denverpost.com/feature/app-news/feed/",
-            "sports": "http://www.denverpost.com/feature/app-sports/feed/",
-            "business": "http://denverpost.com/business/feed/",
-            "entertainment": "http://www.denverpost.com/entertainment/feed/",
-            "lifestyle": "http://denverpost.com/lifestyle/feed/",
-            "opinion": "http://denverpost.com/opinion/feed/",
-            "politics": "http://denverpost.com/politics/feed/",
-            "cannabist": "http://www.thecannabist.co/feed/",
-            "weather": "http://m.accuweather.com/en/us/denver-co/80203/weather-forecast/347810",
-        };
+            // secondary feeds in case primary feed article is empty
+            var feeds = {
+                "news": "http://denverpost.com/feature/app-news/feed/",
+                "sports": "http://www.denverpost.com/feature/app-sports/feed/",
+                "business": "http://denverpost.com/business/feed/",
+                "entertainment": "http://www.denverpost.com/entertainment/feed/",
+                "lifestyle": "http://denverpost.com/lifestyle/feed/",
+                "opinion": "http://denverpost.com/opinion/feed/",
+                "politics": "http://denverpost.com/politics/feed/",
+                "cannabist": "http://www.thecannabist.co/feed/",
+                "weather": "http://m.accuweather.com/en/us/denver-co/80203/weather-forecast/347810",
+            };
 
-        var xmlDoc = $.parseXML(data);
-        var xml = $(xmlDoc);
-        var items = xml.find('item');
+            var xmlDoc = $.parseXML(data);
+            var xml = $(xmlDoc);
+            var items = xml.find('item');
 
-        //console.log(xmlDoc);
-        // console.log(xml);
-        console.log('items', items);
+            //console.log(xmlDoc);
+            // console.log(xml);
+            console.log('items', items);
 
-        // loop through each item / article
-        items.each(function() {
-            var item = $(this);
-            var categories = item.find('category');
+            // loop through each item / article
+            items.each(function() {
+                var item = $(this);
+                var categories = item.find('category');
 
-            // loop through each category in an article
-            categories.each(function() {
-                // get the category name
-                var category = $(this).text();
-                  if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
+                // loop through each category in an article
+                categories.each(function() {
+                    // get the category name
+                    var category = $(this).text();
+                    if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
-                    // create a json object for each category
-                    articles[category.toLowerCase()] = {
-                        "title": item.children('title').text(),
-                        "blurb": item.children('description').text(),
-                        "link": item.children('link').text()
-                    };
+                        // create a json object for each category
+                        articles[category.toLowerCase()] = {
+                            "title": item.children('title').text(),
+                            "blurb": item.children('description').text(),
+                            "link": item.children('link').text()
+                        };
 
-                    //exiting the catagories loop
-                    return;
-                }
+                        //exiting the catagories loop
+                        return;
+                    }
+                });
             });
-        });
 
-        for (var i = 0; i < newsCategories.length; i++) {
-            var category = newsCategories[i];
-              if (!articles.hasOwnProperty(category)) {
+            var yourMom = [];
+            $.when(
+                    // for (var i = 0; i < newsCategories.length; i++) {
+                    //     var category = newsCategories[i];
+                    //     if (!articles.hasOwnProperty(category)) {
+                    //
+                    //         console.log(newsCategories[i]);
+                    //         console.log(feeds[category]);
 
-                console.log(newsCategories[i]);
-                console.log(feeds[category]);
+                            //calling feed and parsing
+                            $.get(feeds['sports'], function(data) {
+                                yourMom.push(data);
+                            }),
 
-                //calling feed and parsing
-                $.get(feeds[category], function(data, status) {
+                            $.get(feeds['opinion'], function(data) {
+                                yourMom.push(data);
+                            })
+                      //  }
+                    // }
+                ).then(function() {
+                  console.log('yourMom', yourMom);
+                });
 
-                     var xmlDocCategory = $.parseXML(data);
-                     var xmlCategory = $(xmlDocCategory);
-                     var itemsCategory = xmlCategory.find('item');
-                //     var articlesCategory = {};
-                     console.log(itemsCategory);
-                //     // console.log(xml);
-                //     console.log('items', itemsCategory);
-                 }, 'text');
-            }
-        }
-
-        // after we have sorted out all of articles and have one per category,
-        // loop through each category and try to write articles to divs
+            // after we have sorted out all of articles and have one per category,
+            // loop through each category and try to write articles to divs
 
 
-    }, 'text')
-    .done(function(){
-      for (var category in articles) {
-          if (newsCategories.includes(category.toLowerCase())) {
-              // Get the class name of the div based on the category name (.newsheadline, .newsfeed)
-              var headlineDiv = '.' + category.toLowerCase() + 'headline';
-              var blurbDiv = '.' + category.toLowerCase() + 'feed';
+        }, 'text')
+        .done(function() {
+            for (var category in articles) {
+                if (newsCategories.includes(category.toLowerCase())) {
+                    // Get the class name of the div based on the category name (.newsheadline, .newsfeed)
+                    var headlineDiv = '.' + category.toLowerCase() + 'headline';
+                    var blurbDiv = '.' + category.toLowerCase() + 'feed';
 
-            /*  var articles = {
-                'sports': {
-                  'title': 'go fuck yo self',
-                  'blurb': 'something long',
-                  'link': 'http://fuckit'
-                },
-                'news': {
-                  'title': 'go fuck yo self',
-                  'blurb': 'something long'
+                    /*  var articles = {
+                        'sports': {
+                          'title': 'go fuck yo self',
+                          'blurb': 'something long',
+                          'link': 'http://fuckit'
+                        },
+                        'news': {
+                          'title': 'go fuck yo self',
+                          'blurb': 'something long'
+                        }
+                      }; */
+
+                    if ($(headlineDiv)) {
+                        console.log("writing content for category: ", category);
+                        var titleTag = $(headlineDiv);
+                        var descTag = $(blurbDiv);
+                        var myhref = articles[category].link;
+                        titleTag.html('<a target="_blank" href="' + myhref + '">' + articles[category].title + '</a>');
+                        descTag.html(articles[category].blurb);
+                    }
                 }
-              }; */
-
-              if ($(headlineDiv)) {
-                console.log("writing content for category: ", category);
-                  var titleTag = $(headlineDiv);
-                  var descTag = $(blurbDiv);
-                  var myhref  = articles[category].link;
-                  titleTag.html('<a target="_blank" href="' + myhref + '">' + articles[category].title + '</a>');
-                  descTag.html(articles[category].blurb);
-              }
-          }
-      }
-    });
+            }
+        });
 });
