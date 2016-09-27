@@ -55,19 +55,6 @@ $(document).ready(function() {
 
     $.get("http://www.denverpost.com/feed/", function(data, status) {
 
-            // secondary feeds in case primary feed article is empty
-            var feeds = {
-                "news": "http://denverpost.com/feature/app-news/feed/",
-                "sports": "http://www.denverpost.com/feature/app-sports/feed/",
-                "business": "http://denverpost.com/business/feed/",
-                "entertainment": "http://www.denverpost.com/entertainment/feed/",
-                "lifestyle": "http://denverpost.com/lifestyle/feed/",
-                "opinion": "http://denverpost.com/opinion/feed/",
-                "politics": "http://denverpost.com/politics/feed/",
-                "cannabist": "http://www.thecannabist.co/feed/",
-                "weather": "http://m.accuweather.com/en/us/denver-co/80203/weather-forecast/347810",
-            };
-
             var xmlDoc = $.parseXML(data);
             var xml = $(xmlDoc);
             var items = xml.find('item');
@@ -100,62 +87,62 @@ $(document).ready(function() {
                 });
             });
 
-            var yourMom = [];
-            $.when(
-                    // for (var i = 0; i < newsCategories.length; i++) {
-                    //     var category = newsCategories[i];
-                    //     if (!articles.hasOwnProperty(category)) {
-                    //
-                    //         console.log(newsCategories[i]);
-                    //         console.log(feeds[category]);
 
-                            //calling feed and parsing
-                            $.get(feeds['sports'], function(data) {
-                                yourMom.push(data);
-                            }),
-
-                            $.get(feeds['opinion'], function(data) {
-                                yourMom.push(data);
-                            })
-                      //  }
-                    // }
-                ).then(function() {
-                  console.log('yourMom', yourMom);
-                });
-
-            // after we have sorted out all of articles and have one per category,
-            // loop through each category and try to write articles to divs
 
 
         }, 'text')
         .done(function() {
+
+            var aDivs = [];
+
             for (var category in articles) {
                 if (newsCategories.includes(category.toLowerCase())) {
-                    // Get the class name of the div based on the category name (.newsheadline, .newsfeed)
-                    var headlineDiv = '.' + category.toLowerCase() + 'headline';
-                    var blurbDiv = '.' + category.toLowerCase() + 'feed';
+                    
 
-                    /*  var articles = {
-                        'sports': {
-                          'title': 'go fuck yo self',
-                          'blurb': 'something long',
-                          'link': 'http://fuckit'
-                        },
-                        'news': {
-                          'title': 'go fuck yo self',
-                          'blurb': 'something long'
-                        }
-                      }; */
+                    console.log("writing content for category: ", category);
 
-                    if ($(headlineDiv)) {
-                        console.log("writing content for category: ", category);
-                        var titleTag = $(headlineDiv);
-                        var descTag = $(blurbDiv);
-                        var myhref = articles[category].link;
-                        titleTag.html('<a target="_blank" href="' + myhref + '">' + articles[category].title + '</a>');
-                        descTag.html(articles[category].blurb);
-                    }
+
+                    var myhref = articles[category].link;
+                    var myTitle = articles[category].title;
+                    var myBlurb = articles[category].blurb;
+
+
+                    var divHtml = '<div class="col-md-4">' +
+                        '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
+                        '<div class="headline"> ' + myTitle + ' +</div>' +
+                        '<div class="blurb">' + myBlurb + '</div>' +
+                        '</div>';
+                    aDivs.push(divHtml);
+
                 }
             }
+            document.querySelector(".container");
+
         });
 });
+
+/*
+Function that will accept a feed response and pull the details for an item
+*/
+function getItemDetails(data) {
+    var xmlDoc = $.parseXML(data);
+    var xml = $(xmlDoc);
+    console.log('xml document', xml);
+    var items = xml.find('channel');
+
+    console.log('xml data', data);
+    console.log('my items?', items);
+
+
+    // loop through each item / article
+    items.each(function() {
+        var item = $(this);
+        console.log('found an item?', item);
+        // create a json object for each category
+        return {
+            "title": item.children('title').text(),
+            "blurb": item.children('description').text(),
+            "link": item.children('link').text()
+        };
+    });
+}
