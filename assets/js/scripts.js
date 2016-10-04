@@ -97,26 +97,51 @@ $(document).ready(function() {
 
             for (var category in articles) {
                 if (newsCategories.includes(category.toLowerCase())) {
-                    
+
 
                     console.log("writing content for category: ", category);
 
 
+
                     var myhref = articles[category].link;
+
                     var myTitle = articles[category].title;
                     var myBlurb = articles[category].blurb;
 
-
-                    var divHtml = '<div class="col-md-4">' +
+                    var divHtml =  '<div class="col-md-4">' +
                         '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
-                        '<div class="headline"> ' + myTitle + ' +</div>' +
+                        '<div class="headline"> ' + myTitle + '</div>' +
                         '<div class="blurb">' + myBlurb + '</div>' +
                         '</div>';
                     aDivs.push(divHtml);
 
                 }
             }
-            document.querySelector(".container");
+
+            //console.log(aDivs);
+
+
+            // start a row before you start the loop
+            var content = document.querySelector('#content');
+
+            content.innerHTML = '<!-- FIRST --><div class="row">' + content.innerHTML;
+
+            for (i = 0; i < aDivs.length; i++) {
+                var divCount = i + 1;
+                content.innerHTML = aDivs[i] + content.innerHTML;
+                if (divCount % 3 === 0) {
+                    // if this is the 3rd div then close the row and open a new one
+                    content.innerHTML = '<div class="row">' + content.innerHTML;
+                    content.innerHTML = content.innerHTML + '<!-- closing divCount = ' + divCount + ' --></div>';
+
+                }
+
+            }
+
+
+            // after all the divs are done close the row
+            content.innerHTML = content.innerHTML + '</div>';
+
 
         });
 });
