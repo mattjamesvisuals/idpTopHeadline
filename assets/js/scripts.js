@@ -103,9 +103,9 @@ $(document).ready(function() {
                     var myTitle = articles[category].title;
                     var myBlurb = articles[category].blurb;
 
-                    var divHtml =  '<div class="col-md-4">' +
+                    var divHtml =  '<div class="col-md-3">' +
                         '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
-                        '<div class="headline"> ' + myTitle + '</div>' +
+                        '<a target="_blank" class= "hColor" href="' + myhref + '">' +  myTitle + '</a>' + '<div class="headline"> ' + '</div>' +
                         '<div class="blurb">' + myBlurb + '</div>' +
                         '</div>';
                     aDivs.push(divHtml);
