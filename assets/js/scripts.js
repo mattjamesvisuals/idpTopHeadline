@@ -1,5 +1,6 @@
 $body = $("body");
 
+//.on when action(ajaxStart/ajaxStop) happens perform function
 $(document).on({
     ajaxStart: function() {
         $body.addClass("loading");
@@ -47,21 +48,22 @@ setInterval("showDate()", 1000);
 
 
 //Grab dp feed and assign to variable
-
+//document.ready wait until entire page(dom) is loaded before proceeding with code
 $(document).ready(function() {
     $('#myModal').modal('show');
+    //create an empty object to store articles in
     var articles = {};
     var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
-
+    //get feed and runs code (ajax)
     $.get("http://www.denverpost.com/feed/", function(data, status) {
-
+            //makes js interpret xml in order to run xml specific functions(".find") functions on xml
             var xmlDoc = $.parseXML(data);
             var xml = $(xmlDoc);
             var items = xml.find('item');
 
             //console.log(xmlDoc);
             // console.log(xml);
-            console.log('items', items);
+            //console.log('items', items);
 
             // loop through each item / article
             items.each(function() {
@@ -72,6 +74,7 @@ $(document).ready(function() {
                 categories.each(function() {
                     // get the category name
                     var category = $(this).text();
+                    //if category in list then allow json creation && !articles[category])- if the category has been found skip
                     if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
                         // create a json object for each category
@@ -95,19 +98,23 @@ $(document).ready(function() {
             // define the array and the html element target
             var aDivs = [];
             var content = document.querySelector('#content');
-
-            for (var category in articles) {
+            //category is being defined
+            for (category in articles) {
                 if (newsCategories.includes(category.toLowerCase())) {
+                    //console.log for de-bugging purposes
                     console.log("writing content for category: ", category);
+
+                    //defining variables based on the content in the json object
                     var myhref = articles[category].link;
                     var myTitle = articles[category].title;
                     var myBlurb = articles[category].blurb;
-
-                    var divHtml =  '<div class="col-md-3">' +
+                    //defining what content from the json object gets put into the divHtml variable
+                    var divHtml = '<div class="col-md-4">' +
                         '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
-                        '<a target="_blank" class= "hColor" href="' + myhref + '">' +  myTitle + '</a>' + '<div class="headline"> ' + '</div>' +
+                        '<a target="_blank" class= "hColor" href="' + myhref + '">' + myTitle + '</a>' + '<div class="headline"> ' + '</div>' +
                         '<div class="blurb">' + myBlurb + '</div>' +
                         '</div>';
+                    //pushes the divHtml variable content into the aDivs array
                     aDivs.push(divHtml);
                 }
             }
@@ -115,14 +122,14 @@ $(document).ready(function() {
             // start a row before you start the loop
             var results = '<div class="row">';
             var divCount;
-
+            //make sure that a new row is spit out everytime there are 3 articles plugged in
             for (i = 0; i < aDivs.length; i++) {
                 divCount = i + 1;
                 results = results + aDivs[i];
                 console.log('divCount = ' + divCount);
+                // if this is the 3rd div then close the row and open a new one
                 if (divCount % 3 === 0) {
                     console.log('should be ending row');
-                    // if this is the 3rd div then close the row and open a new one
                     results = results + '</div><div class="row">';
                 }
             }
@@ -134,29 +141,3 @@ $(document).ready(function() {
             content.innerHTML = results + content.innerHTML;
         });
 });
-
-/*
-Function that will accept a feed response and pull the details for an item
-*/
-function getItemDetails(data) {
-    var xmlDoc = $.parseXML(data);
-    var xml = $(xmlDoc);
-    console.log('xml document', xml);
-    var items = xml.find('channel');
-
-    console.log('xml data', data);
-    console.log('my items?', items);
-
-
-    // loop through each item / article
-    items.each(function() {
-        var item = $(this);
-        console.log('found an item?', item);
-        // create a json object for each category
-        return {
-            "title": item.children('title').text(),
-            "blurb": item.children('description').text(),
-            "link": item.children('link').text()
-        };
-    });
-}
