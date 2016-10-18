@@ -1,5 +1,6 @@
 $body = $("body");
 
+//.on when action(ajaxStart/ajaxStop) happens perform function
 $(document).on({
     ajaxStart: function() {
         $body.addClass("loading");
@@ -47,34 +48,22 @@ setInterval("showDate()", 1000);
 
 
 //Grab dp feed and assign to variable
-
+//document.ready wait until entire page(dom) is loaded before proceeding with code
 $(document).ready(function() {
     $('#myModal').modal('show');
+    //create an empty object to store articles in
     var articles = {};
-    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
-
+    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics','crime & courts','traffic'];
+    //get feed and runs code (ajax)
     $.get("http://www.denverpost.com/feed/", function(data, status) {
-
-            // secondary feeds in case primary feed article is empty
-            var feeds = {
-                "news": "http://denverpost.com/feature/app-news/feed/",
-                "sports": "http://www.denverpost.com/feature/app-sports/feed/",
-                "business": "http://denverpost.com/business/feed/",
-                "entertainment": "http://www.denverpost.com/entertainment/feed/",
-                "lifestyle": "http://denverpost.com/lifestyle/feed/",
-                "opinion": "http://denverpost.com/opinion/feed/",
-                "politics": "http://denverpost.com/politics/feed/",
-                "cannabist": "http://www.thecannabist.co/feed/",
-                "weather": "http://m.accuweather.com/en/us/denver-co/80203/weather-forecast/347810",
-            };
-
+            //makes js interpret xml in order to run xml specific functions(".find") functions on xml
             var xmlDoc = $.parseXML(data);
             var xml = $(xmlDoc);
             var items = xml.find('item');
 
             //console.log(xmlDoc);
             // console.log(xml);
-            console.log('items', items);
+            //console.log('items', items);
 
             // loop through each item / article
             items.each(function() {
@@ -85,6 +74,7 @@ $(document).ready(function() {
                 categories.each(function() {
                     // get the category name
                     var category = $(this).text();
+                    //if category in list then allow json creation && !articles[category])- if the category has been found skip
                     if (newsCategories.includes(category.toLowerCase()) && !articles[category]) {
 
                         // create a json object for each category
@@ -100,62 +90,54 @@ $(document).ready(function() {
                 });
             });
 
-            var yourMom = [];
-            $.when(
-                    // for (var i = 0; i < newsCategories.length; i++) {
-                    //     var category = newsCategories[i];
-                    //     if (!articles.hasOwnProperty(category)) {
-                    //
-                    //         console.log(newsCategories[i]);
-                    //         console.log(feeds[category]);
 
-                            //calling feed and parsing
-                            $.get(feeds['sports'], function(data) {
-                                yourMom.push(data);
-                            }),
-
-                            $.get(feeds['opinion'], function(data) {
-                                yourMom.push(data);
-                            })
-                      //  }
-                    // }
-                ).then(function() {
-                  console.log('yourMom', yourMom);
-                });
-
-            // after we have sorted out all of articles and have one per category,
-            // loop through each category and try to write articles to divs
 
 
         }, 'text')
         .done(function() {
-            for (var category in articles) {
+            // define the array and the html element target
+            var aDivs = [];
+            var content = document.querySelector('#content');
+            //category is being defined
+            for (category in articles) {
                 if (newsCategories.includes(category.toLowerCase())) {
-                    // Get the class name of the div based on the category name (.newsheadline, .newsfeed)
-                    var headlineDiv = '.' + category.toLowerCase() + 'headline';
-                    var blurbDiv = '.' + category.toLowerCase() + 'feed';
+                    //console.log for de-bugging purposes
+                    console.log("writing content for category: ", category);
 
-                    /*  var articles = {
-                        'sports': {
-                          'title': 'go fuck yo self',
-                          'blurb': 'something long',
-                          'link': 'http://fuckit'
-                        },
-                        'news': {
-                          'title': 'go fuck yo self',
-                          'blurb': 'something long'
-                        }
-                      }; */
-
-                    if ($(headlineDiv)) {
-                        console.log("writing content for category: ", category);
-                        var titleTag = $(headlineDiv);
-                        var descTag = $(blurbDiv);
-                        var myhref = articles[category].link;
-                        titleTag.html('<a target="_blank" href="' + myhref + '">' + articles[category].title + '</a>');
-                        descTag.html(articles[category].blurb);
-                    }
+                    //defining variables based on the content in the json object
+                    var myhref = articles[category].link;
+                    var myTitle = articles[category].title;
+                    var myBlurb = articles[category].blurb;
+                    //defining what content from the json object gets put into the divHtml variable
+                    var divHtml = '<div class="col-md-4">' +
+                        '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
+                        '<a target="_blank" class= "hColor" href="' + myhref + '">' + myTitle + '</a>' + '<div class="headline"> ' + '</div>' +
+                        '<div class="blurb">' + myBlurb + '</div>' +
+                        '</div>';
+                    //pushes the divHtml variable content into the aDivs array
+                    aDivs.push(divHtml);
                 }
             }
+
+            // start a row before you start the loop
+            var results = '<div class="row">';
+            var divCount;
+            //make sure that a new row is spit out everytime there are 3 articles plugged in
+            for (i = 0; i < aDivs.length; i++) {
+                divCount = i + 1;
+                results = results + aDivs[i];
+                console.log('divCount = ' + divCount);
+                // if this is the 3rd div then close the row and open a new one
+                if (divCount % 3 === 0) {
+                    console.log('should be ending row');
+                    results = results + '</div><div class="row">';
+                }
+            }
+
+            // after all the divs are done close the row
+            results = results + '</div>';
+
+            // once we've got all of the html stored in the "results" string then plug it into page
+            content.innerHTML = results + content.innerHTML;
         });
 });

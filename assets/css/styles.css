@@ -1,6 +1,19 @@
 /*.jumbotron {
   color: #000000;
 }*/
+body {
+  background: url('../img/background4.jpg') no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+}
+
+.jumbotron{
+  background: url('../img/background4.jpg') no-repeat center center fixed;
+
+}
 #myModal {
 
 }
@@ -15,10 +28,10 @@
     font-family: 'Old Standard TT', serif;
     font-size: 25px;
 }
-.row {
+/*.row {
     margin-right: -15px;
     margin-left: 15%;
-}
+}*/
 .headline {
     width: 100%;
     color: black;
@@ -55,6 +68,40 @@ body.loading {
 
 /* Anytime the body has the loading class, our
    modal element will be visible */
+   .background {
+     margin: auto;
+     background: url('../img/background.jpg');
+     background-size: auto;
+     background-repeat:no-repeat;
+   }
 body.loading .modal {
     display: block;
+
+}
+
+.col-md-12 {
+    width: 15%;
+    float: right;
+    padding-right: 5%;
+
+}
+.hColor {
+  color: #aa1b1b;
+}
+.col-md-3 {
+  margin: auto;
+  /*width: 25em;*/
+  /*padding-left: 25px;*/
+}
+
+.footer {
+  position: relative;
+  margin-top: -150px; /* negative value of footer height*/
+  height: 150px;
+  clear:both;
+  padding-top:20px;
+  line-height: 2.75px;
+}
+.copyright {
+  padding-left: 25px;
 }
