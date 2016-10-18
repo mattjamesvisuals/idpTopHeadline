@@ -53,7 +53,7 @@ $(document).ready(function() {
     $('#myModal').modal('show');
     //create an empty object to store articles in
     var articles = {};
-    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics'];
+    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics','crime & courts','traffic'];
     //get feed and runs code (ajax)
     $.get("http://www.denverpost.com/feed/", function(data, status) {
             //makes js interpret xml in order to run xml specific functions(".find") functions on xml
