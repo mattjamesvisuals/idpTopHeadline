@@ -12,7 +12,17 @@ body {
 
 .jumbotron{
   background: url('../img/background4.jpg') no-repeat center center fixed;
+  padding-bottom: 10px;
+}
+.cLabel {
+  color: #fff;
 
+
+  }
+.c-form{
+  /*padding: px;*/
+  background-color: #666;
+  text-align: center;
 }
 #myModal {
 
