@@ -14,6 +14,15 @@ body {
   background: url('../img/background4.jpg') no-repeat center center fixed;
   padding-bottom: 10px;
 }
+
+label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: 700;
+    float: left;
+    clear: left;
+}
 .cLabel {
   color: #fff;
 
