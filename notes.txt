@@ -1,0 +1,5 @@
+//Notes//
+
+
+category menu fold out
+http://www.newmediacampaigns.com/blog/nicer-navigation-with-css-transitions-part-2
