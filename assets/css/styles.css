@@ -134,6 +134,12 @@ body.loading .modal {
   font-family: 'Old Standard TT', serif;
   /*background-color: gray;*/
 }
+#c-form {
+  background-color: #FFFFFF;
+  border: 7px solid #333333;
+  padding-bottom: 5px;
+
+}
 .submitButton , .closeButton {
   border : solid 1px #000000;
 	border-radius : 3px;
@@ -153,4 +159,7 @@ body.loading .modal {
 	background : -ms-linear-gradient(top, #5f6166 0%, #00060a 100%);
 	background : linear-gradient(top, #5f6166 0%, #00060a 100%);
 	filter : progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f6166', endColorstr='#00060a',GradientType=0 );
+}
+.h2 {
+  color: #333;
 }
