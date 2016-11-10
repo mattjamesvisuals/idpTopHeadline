@@ -50,6 +50,27 @@ setInterval("showDate()", 1000);
 //Grab dp feed and assign to variable
 //document.ready wait until entire page(dom) is loaded before proceeding with code
 $(document).ready(function() {
+
+    /* put code to show category form here */
+
+    var categoryForm = $('.categoryForm');
+    var submitButton = $('.submitButton');
+    var closeButton = $('.closeButton');
+
+    submitButton.on('click', function() {
+      categoryForm.slideToggle()
+
+    });
+
+    closeButton.on('click', function() {
+      categoryForm.slideToggle()
+
+    });
+
+
+
+
+
     $('#myModal').modal('show');
     //create an empty object to store articles in
     var articles = {};
