@@ -44,11 +44,14 @@ $(document).ready(function() {
 function saveFeedCategoryPreferences() {
     $('.form-check-input').each(function() {
         var categoryCheckbox = $(this);
-        console.log(categoryCheckbox.val() + ' is checked = ' + categoryCheckbox.attr("checked"));
+        console.log(categoryCheckbox.val());
     });
 
     console.log('short cut to show items that are checked');
-    console.log($("input[type=checkbox]:checked"));
+    $("input[type=checkbox]:checked").each(function() {
+        console.log($(this).val() + ' is checked!');
+    })
+
 }
 
 /**
