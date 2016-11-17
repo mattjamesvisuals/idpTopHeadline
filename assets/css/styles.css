@@ -136,7 +136,7 @@ body.loading .modal {
 }
 #c-form {
   background-color: #FFFFFF;
-  border: 7px solid #333333;
+  border: 2px solid #333333;
   padding-bottom: 5px;
 
 }
@@ -159,7 +159,4 @@ body.loading .modal {
 	background : -ms-linear-gradient(top, #5f6166 0%, #00060a 100%);
 	background : linear-gradient(top, #5f6166 0%, #00060a 100%);
 	filter : progid:DXImageTransform.Microsoft.gradient( startColorstr='#5f6166', endColorstr='#00060a',GradientType=0 );
-}
-.h2 {
-  color: #333;
 }

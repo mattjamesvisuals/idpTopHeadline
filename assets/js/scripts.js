@@ -59,13 +59,14 @@ $(document).ready(function() {
 
     submitButton.on('click', function() {
       categoryForm.slideToggle()
-
+      $('.form-check-input').each(function() { console.log($(this).val() )});
     });
 
     closeButton.on('click', function() {
       categoryForm.slideToggle()
 
     });
+
 
 
 
