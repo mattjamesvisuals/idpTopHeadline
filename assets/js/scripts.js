@@ -10,70 +10,52 @@ $(document).on({
     }
 });
 
-
-
-//Date and Time Code
-$('h2').css('color', '#8B0000', 'align', 'center');
-
-function showDate() {
-    var now = new Date();
-    var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
-    var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
-
-    function fourdigits(number) {
-        return (number < 1000) ? number + 1900 : number;
-    }
-
-    tnow = new Date();
-    thour = now.getHours();
-    tmin = now.getMinutes();
-    tsec = now.getSeconds();
-
-    if (tmin <= 9) {
-        tmin = "0" + tmin;
-    }
-    if (tsec <= 9) {
-        tsec = "0" + tsec;
-    }
-    if (thour < 10) {
-        thour = "0" + thour;
-    }
-
-    today = days[now.getDay()] + ", " + date + " " + months[now.getMonth()] + ", " + (fourdigits(now.getYear())) + " - " + thour + ":" + tmin + ":" + tsec;
-    document.getElementById("dateDiv").innerHTML = today;
-}
-setInterval("showDate()", 1000);
-
-
-
-//Grab dp feed and assign to variable
-//document.ready wait until entire page(dom) is loaded before proceeding with code
+// Grab dp feed and assign to variable
+// document.ready wait until entire page(dom) is loaded before proceeding with code
 $(document).ready(function() {
+    // once the page is loaded show the date and update every 5 minutes
+    setInterval("showDate()", 1000 * 60 * 5);
 
     /* put code to show category form here */
-
     var categoryForm = $('.categoryForm');
     var submitButton = $('.submitButton');
     var closeButton = $('.closeButton');
 
     submitButton.on('click', function() {
-      categoryForm.slideToggle()
-      $('.form-check-input').each(function() { console.log($(this).val() )});
+      categoryForm.slideUp()
+
+      // On submit check which inputs are selected and save to a cookie
+      saveFeedCategoryPreferences();
     });
 
     closeButton.on('click', function() {
-      categoryForm.slideToggle()
-
+      categoryForm.slideUp()
     });
 
-
-
-
-
-
     $('#myModal').modal('show');
-    //create an empty object to store articles in
+
+    // load the article content
+    loadArticles();
+});
+
+/**
+* Save the feed categories based on which checkboxes the users have selected
+**/
+function saveFeedCategoryPreferences() {
+    $('.form-check-input').each(function() {
+        var categoryCheckbox = $(this);
+        console.log(categoryCheckbox.val() + ' is checked = ' + categoryCheckbox.attr("checked"));
+    });
+
+    console.log('short cut to show items that are checked');
+    console.log($("input[type=checkbox]:checked"));
+}
+
+/**
+* This function is used to load all of the article content from the feed
+**/
+function loadArticles() {
+    // create an empty object to store articles in
     var articles = {};
     var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics','crime & courts','traffic'];
     //get feed and runs code (ajax)
@@ -111,10 +93,6 @@ $(document).ready(function() {
                     }
                 });
             });
-
-
-
-
         }, 'text')
         .done(function() {
             // define the array and the html element target
@@ -162,4 +140,36 @@ $(document).ready(function() {
             // once we've got all of the html stored in the "results" string then plug it into page
             content.innerHTML = results + content.innerHTML;
         });
-});
+}
+
+
+// Date and Time Code
+$('h2').css('color', '#8B0000', 'align', 'center'); // what is this?  Can just be in css
+function showDate() {
+    var now = new Date();
+    var days = new Array('Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday');
+    var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+    var date = ((now.getDate() < 10) ? "0" : "") + now.getDate();
+
+    function fourdigits(number) {
+        return (number < 1000) ? number + 1900 : number;
+    }
+
+    tnow = new Date();
+    thour = now.getHours();
+    tmin = now.getMinutes();
+    tsec = now.getSeconds();
+
+    if (tmin <= 9) {
+        tmin = "0" + tmin;
+    }
+    if (tsec <= 9) {
+        tsec = "0" + tsec;
+    }
+    if (thour < 10) {
+        thour = "0" + thour;
+    }
+
+    today = days[now.getDay()] + ", " + date + " " + months[now.getMonth()] + ", " + (fourdigits(now.getYear())) + " - " + thour + ":" + tmin + ":" + tsec;
+    document.getElementById("dateDiv").innerHTML = today;
+}
