@@ -56,6 +56,7 @@ $(document).ready(function() {
     var categoryForm = $('.categoryForm');
     var submitButton = $('.submitButton');
     var closeButton = $('.closeButton');
+    var cog = $('.cog');
 
     submitButton.on('click', function() {
       categoryForm.slideToggle()
@@ -65,6 +66,11 @@ $(document).ready(function() {
     closeButton.on('click', function() {
       categoryForm.slideToggle()
 
+    });
+
+    cog.on('click', function() {
+      categoryForm.slideToggle()
+      $('.form-check-input').each(function() { console.log($(this).val() )});
     });
 
 
@@ -132,7 +138,7 @@ $(document).ready(function() {
                     var myBlurb = articles[category].blurb;
                     //defining what content from the json object gets put into the divHtml variable
                     var divHtml = '<div class="col-md-4">' +
-                        '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2>' + category + '</h2></a>' +
+                        '<a href="http://www.denverpost.com/' + category.toLowerCase() + '/"><h2 class = "cStyle">' + category + '</h2></a>' +
                         '<a target="_blank" class= "hColor" href="' + myhref + '">' + myTitle + '</a>' + '<div class="headline"> ' + '</div>' +
                         '<div class="blurb">' + myBlurb + '</div>' +
                         '</div>';

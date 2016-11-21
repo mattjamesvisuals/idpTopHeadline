@@ -2,7 +2,7 @@
   color: #000000;
 }*/
 body {
-  background: url('../img/background4.jpg') no-repeat center center fixed;
+  /*background: url('../img/background4.jpg') no-repeat center center fixed;*/
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -63,6 +63,10 @@ label {
 .container {
   margin-left: auto;
 }
+.cStyle {
+  text-transform:capitalize;
+  color: #473B36;
+}
 
 
 .modal {
@@ -78,6 +82,11 @@ label {
                 50% 50%
                 no-repeat;
 }
+.cog {
+  float: right;
+  margin: 1%;
+
+  }
 
 /* When the body has the loading class, we turn
    the scrollbar off with overflow:hidden */
@@ -106,6 +115,7 @@ body.loading .modal {
 }*/
 .hColor {
   color: #aa1b1b;
+  font-size: 1.5em;
 }
 .col-md-3 {
   margin: auto;
@@ -135,7 +145,7 @@ body.loading .modal {
   /*background-color: gray;*/
 }
 #c-form {
-  background-color: #FFFFFF;
+  background-color: #d3cdcd;
   border: 2px solid #333333;
   padding-bottom: 5px;
 
