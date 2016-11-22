@@ -49,18 +49,21 @@ $(document).ready(function() {
 /**
 * Save the feed categories based on which checkboxes the users have selected
 **/
+//figure out whch categories are selected. find the values for each checked category
+//create an array with checked categories
+//save array to a cookie
 function saveFeedCategoryPreferences() {
-    $('.form-check-input').each(function() {
-        var categoryCheckbox = $(this);
-        console.log(categoryCheckbox.val());
-    });
-
+    var checkedValue = [];
     console.log('short cut to show items that are checked');
     $("input[type=checkbox]:checked").each(function() {
         console.log($(this).val() + ' is checked!');
-    })
 
-}
+        checkedValue.push($(this).val());
+    })
+    console.log ('checked value = ', checkedValue);
+    document.cookie = checkedValue;
+
+  }
 
 /**
 * This function is used to load all of the article content from the feed
