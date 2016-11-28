@@ -14,7 +14,7 @@ $(document).on({
 // document.ready wait until entire page(dom) is loaded before proceeding with code
 $(document).ready(function() {
     // once the page is loaded show the date and update every 5 minutes
-    setInterval("showDate()", 1000 * 60 * 5);
+    setInterval("showDate()", 3000 * 60 * 5);
 
     /* put code to show category form here */
     var categoryForm = $('.categoryForm');
@@ -23,19 +23,21 @@ $(document).ready(function() {
     var cog = $('.cog');
 
     submitButton.on('click', function() {
-      categoryForm.slideUp()
+        categoryForm.slideUp()
 
-      // On submit check which inputs are selected and save to a cookie
-      saveFeedCategoryPreferences();
+        // On submit check which inputs are selected and save to a cookie
+        saveFeedCategoryPreferences();
     });
 
     closeButton.on('click', function() {
-      categoryForm.slideUp()
+        categoryForm.slideUp()
     });
 
     cog.on('click', function() {
-      categoryForm.slideToggle()
-      $('.form-check-input').each(function() { console.log($(this).val() )});
+        categoryForm.slideToggle()
+        $('.form-check-input').each(function() {
+            console.log($(this).val())
+        });
     });
 
 
@@ -47,8 +49,8 @@ $(document).ready(function() {
 });
 
 /**
-* Save the feed categories based on which checkboxes the users have selected
-**/
+ * Save the feed categories based on which checkboxes the users have selected
+ **/
 //figure out whch categories are selected. find the values for each checked category
 //create an array with checked categories
 //save array to a cookie
@@ -60,18 +62,24 @@ function saveFeedCategoryPreferences() {
 
         checkedValue.push($(this).val());
     })
-    console.log ('checked value = ', checkedValue);
-    document.cookie = checkedValue;
+    console.log('checked value = ', checkedValue);
 
-  }
+    var date =  new Date();
+    date.setYear(date.getYear() + 1);
+    console.log(date.toGMTString());
+    console.log('cookie: ' + document.cookie);
+
+    document.cookie = "categories=" + checkedValue + ";expires=" + date.toGMTString();
+    console.log('cookie after: ' + document.cookie);
+}
 
 /**
-* This function is used to load all of the article content from the feed
-**/
+ * This function is used to load all of the article content from the feed
+ **/
 function loadArticles() {
     // create an empty object to store articles in
     var articles = {};
-    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics','crime & courts','traffic'];
+    var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'crime & courts', 'traffic'];
     //get feed and runs code (ajax)
     $.get("http://www.denverpost.com/feed/", function(data, status) {
             //makes js interpret xml in order to run xml specific functions(".find") functions on xml
