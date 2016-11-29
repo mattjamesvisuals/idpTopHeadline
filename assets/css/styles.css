@@ -11,7 +11,7 @@ body {
 }
 
 .jumbotron{
-  background: url('../img/background4.jpg') no-repeat center center fixed;
+  /*background: url('../img/background4.jpg') no-repeat center center fixed;*/
   padding-bottom: 10px;
 }
 
