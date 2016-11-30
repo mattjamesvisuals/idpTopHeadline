@@ -22,6 +22,7 @@ $(document).ready(function() {
     var closeButton = $('.closeButton');
     var cog = $('.cog');
 
+
     submitButton.on('click', function() {
         categoryForm.slideUp()
 
@@ -73,6 +74,23 @@ function saveFeedCategoryPreferences() {
     console.log('cookie after: ' + document.cookie);
 }
 
+
+function getCookie(c_name) {
+    if (document.cookie.length > 0) {
+        c_start = document.cookie.indexOf(c_name + "=");
+        if (c_start != -1) {
+            c_start = c_start + c_name.length + 1;
+            c_end = document.cookie.indexOf(";", c_start);
+            if (c_end == -1) {
+                c_end = document.cookie.length;
+            }
+            return unescape(document.cookie.substring(c_start, c_end));
+        }
+    }
+    return "";
+}
+
+
 /**
  * This function is used to load all of the article content from the feed
  **/
@@ -80,7 +98,18 @@ function loadArticles() {
     // create an empty object to store articles in
     var articles = {};
     var newsCategories = ['news', 'sports', 'business', 'entertainment', 'lifestyle', 'opinion', 'politics', 'crime & courts', 'traffic'];
+    var categoriesInCookie = getCookie('categories');
+    console.log ("heres my" + categoriesInCookie);
+
+    if (categoriesInCookie.length > 0) {
+      newsCategories = categoriesInCookie.split(",");
+      newsCategories = newsCategories.map(function(category) {
+  return category.toLowerCase();
+});
+    }
+
     //get feed and runs code (ajax)
+
     $.get("http://www.denverpost.com/feed/", function(data, status) {
             //makes js interpret xml in order to run xml specific functions(".find") functions on xml
             var xmlDoc = $.parseXML(data);
